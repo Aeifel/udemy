@@ -1,0 +1,52 @@
+.content{
+    background-color: #F7F9FA;
+    padding:20px;
+    padding:2rem;
+}
+.heading{
+    font-size:3rem;
+    font-family: "SecondaryFont";
+    font-weight: 3rem;
+    margin-bottom:10px;
+}
+.text{
+    font-family: "PrimaryFont";
+    font-size:1.5rem;
+    font-weight: 1rem;
+}
+/* .cardsContainer{
+    display: flex;
+    align-items: row;
+    overflow-x: hidden;
+} */
+.flexContainer{
+    padding:2rem;
+    display: flex;
+    flex-direction: row;
+}
+.insImg{
+    height: 400px;
+}
+.insContent{
+    padding:4rem;
+}
+.insContent h2{
+    font-family: "SecondaryFont";
+    font-size:2rem;
+}
+.insContent p {
+    font-family: "PrimaryFont";
+    font-size:1.2rem;
+}
+.insContent button {
+    font-family: "PrimaryFont";
+    font-size:1.3rem;
+    padding:0.5rem;
+    background-color: var(--textPrimary);
+    color:white;
+    border:1px solid black;
+}
+.insContent button:hover {
+    cursor:pointer;
+    background-color: black;
+}

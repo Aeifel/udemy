@@ -1,0 +1,134 @@
+/* always fucking do classnames element selectors get mixed up on multiple imports*/
+.bodyContainer {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    height: 100vh;
+}
+
+.bodyContainer h2 {
+    font-family: "InterBlack";
+    font-size: 2rem;
+}
+
+.leftCol {
+    padding: 20vmin 3rem 0 10vmin;
+}
+
+.option {
+    background-color: #FBFBFB;
+    width: 50%;
+    font-family: "PrimaryFont";
+    padding: 20px;
+    border-radius: 5px;
+    margin-block: 10px;
+    transition-property: all;
+    transition-duration: 1s;
+    transition-timing-function: ease-in-out;
+    transition: all 0.35s ease-in-out;
+}
+
+.option:hover {
+    padding: 22px;
+    cursor: pointer;
+}
+
+.option:focus {
+    border: 1px solid black;
+}
+
+.label {
+    display: block;
+    /* border: solid 2px black; */
+    color: var(--textPrimary);
+    text-align: center;
+    background-color: #FBFBFB;
+    background:rgb(240,240,240);
+    width: 70%;
+    font-family: "PrimaryFont";
+    padding: 20px;
+    border-radius: 5px;
+    margin-block: 10px;
+    transition: all 0.45s ease-in-out;
+}
+.label:hover{
+    cursor: pointer;
+}
+
+.checkBox {
+    display: none;
+    /* border:2px solid red; */
+    /* width: 700px; */
+}
+input[type="radio"]:checked + .label {
+    border: solid 2px var(--textSecondary);
+    color: var(--textSecondary);
+}
+/* CSS */
+.btn {
+  align-items: center;
+  background-color: #FFFFFF;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: .25rem;
+  box-shadow: rgba(0, 0, 0, 0.02) 0 1px 3px 0;
+  box-sizing: border-box;
+  color: rgba(0, 0, 0, 0.85);
+  cursor: pointer;
+  display: inline-flex;
+  font-family: system-ui,-apple-system,system-ui,"Helvetica Neue",Helvetica,Arial,sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  justify-content: center;
+  line-height: 1.25;
+  margin: 0;
+  min-height: 3rem;
+  padding: calc(.875rem - 1px) calc(1.5rem - 1px);
+  position: relative;
+  text-decoration: none;
+  transition: all 250ms;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  vertical-align: baseline;
+  width: auto;
+}
+
+.btn:hover,
+.btn:focus {
+  border-color: rgba(0, 0, 0, 0.15);
+  box-shadow: rgba(0, 0, 0, 0.1) 0 4px 12px;
+  color: rgba(0, 0, 0, 0.65);
+}
+
+.btn:hover {
+  transform: translateY(-1px);
+}
+
+.btn:active {
+  background-color: #F0F0F1;
+  border-color: rgba(0, 0, 0, 0.15);
+  box-shadow: rgba(0, 0, 0, 0.06) 0 2px 4px;
+  color: rgba(0, 0, 0, 0.65);
+  transform: translateY(0);
+}
+.disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+.contents{
+    font-family: "PrimaryFont";
+    font-size:1.2rem;
+    width: 50%;
+    background-color: var(--textPrimary);
+    border:1px solid white;
+    color:white;
+    border-radius: 10px;
+    padding:2rem;
+    position: absolute;
+    top:30%;
+    left:50%;
+    transition: all 3.5s ease-in-out;
+}
+.contents li {
+    list-style-type: none;
+    line-height: 30px;
+}

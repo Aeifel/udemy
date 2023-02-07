@@ -1,0 +1,147 @@
+.bodyContainer {
+    display: flex;
+    flex-direction: row;
+    background-color: rgb(240,240,240,0.7);
+}
+.header{
+    background-color: var(--textPrimary);
+    color:white;
+    font-family:"PrimaryFont";
+    padding:2.5rem;
+}
+.header h2 {
+    font-size:3rem;
+    margin-block:10px;
+}
+.header p {
+    margin-block:5px;
+}
+.filler{
+    height:100px;
+    background-color: var(--textPrimary);
+}
+ .courseCard{ 
+    padding:10px;
+    position: sticky;
+    top:0;
+    background-color: white;
+    margin-top:-1px;
+    font-family: "PrimaryFont";
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+} 
+.courseCard img {
+    width: 100%;
+}
+.listContainer {
+    padding:2rem;
+    font-family: "PrimaryFont";
+    font-size:1.2rem;
+    margin-top:2rem;
+    margin-inline:1rem;
+    border-radius: 10px;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+.flexContainer{
+    display: flex;
+    flex-direction: row;
+}
+.flexContainer > div {
+    flex:1 1 100%;
+    display: flex;
+    flex-direction: column;
+}
+.listContainer h2 {
+    font-family: "SecondaryFont";
+}
+.leftCol{
+    /* flex:1 1 60%; */
+    width: 70%;
+}
+.rightCol {
+    /* flex:0 0 40%; */
+    padding:0px;
+    padding-right: 3rem;
+    width: 30%;
+}
+.listContainer ul {
+    list-style-type:none;
+    margin:0px;
+    padding: 0px;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    max-height: 40vh;
+}
+.listContainer li {
+    display: inline-block;
+    margin-block:10px;
+    margin-right: 10px;;
+}
+.courseContent{
+    margin-inline: 1rem;
+    margin-block:20px;
+    font-family: "PrimaryFont";
+    padding: 2rem;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+.courseContent h2 {
+    font-weight:bold;
+    font-family: "SecondaryFont";
+    font-size:2rem;
+}
+.enrollBtn{
+    font-family: "PrimaryFont";
+  font-size:1.2rem;
+   display: block;
+   width: 70%;
+  border:1px solid var(--textSecondary);
+  border-radius: 0;
+  color: var(--textSecondary);
+  overflow: hidden;
+  z-index: 1;
+  padding-inline:1rem;
+  padding-block:0.6rem;
+  background: transparent;
+  transition: color 150ms ease-in-out;
+  position: relative;
+}
+  
+  .enrollBtn:after {
+    content: '';
+    position: absolute;
+    display: block;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 100%;
+    background: var(--textSecondary);
+    z-index: -1;
+    transition: width 150ms ease-in-out;
+  }
+  
+  .enrollBtn:hover{
+    color:white;
+    cursor: pointer;
+  }
+  .enrollBtn:hover::after{
+    width: 100%;;
+  }
+ 
+@media(max-width:1024px) {
+    .listContainer ul {
+        max-height: none;
+    }
+    .flexContainer{
+        flex-direction: column;
+    }
+    .courseCard{
+        width: 50%;
+        margin-inline:auto;
+    }
+    .filler{
+        display: none;
+    }
+}

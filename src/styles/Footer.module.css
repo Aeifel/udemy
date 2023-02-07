@@ -1,0 +1,32 @@
+.footer{
+    background-color: var(--textPrimary);
+    color:white;
+    font-family: "PrimaryFont";
+    margin:auto 0 0 0;
+    padding:1rem;
+    width: 100%;
+}
+.firstRow{
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+.firstRow > * {
+    flex: 1 1 100%;
+}
+.secondCol {
+    /* justifyalign-self: flex-end; */
+    padding-inline:1rem;
+    text-align: right;
+}
+.container{
+    display: flex;
+    justify-content: flex-start;
+}
+.secondRow > p {
+    font-size:1.2rem;
+    margin-inline: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

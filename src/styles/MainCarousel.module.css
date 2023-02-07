@@ -1,0 +1,44 @@
+.slideContainer1{
+    height:400px;
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    display: flex;
+    justify-content: flex-start;
+    align-items:flex-end;
+}
+.content1{
+    background-color: white;
+    color:black;
+    padding:1rem;
+    box-shadow: 3px 3px rgb(23, 23, 23);
+    width: 400px;
+    margin:0px 0px 50px 20px;
+}
+.slideContainer2{
+    height:400px;
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    display: flex;
+    justify-content: flex-end;
+    align-items:flex-end;
+}
+.content2{
+    background-color: white;
+    color:black;
+    padding:1rem;
+    box-shadow: 3px 3px rgb(23, 23, 23);
+    width: 400px;
+    margin:0px 50px 50px 0px;
+}
+
+.heading{
+    font-family: "SecondaryFont";
+    font-weight: bold;
+    font-size:2rem;
+    color:var(--textSecondary);
+}
+.text{
+    font-family: "PrimaryFont";
+    color:var(--textPrimary);
+    font-size: 1.2rem;
+}

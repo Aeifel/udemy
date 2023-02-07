@@ -1,0 +1,24 @@
+@font-face {
+font-family: "PrimaryFont";
+src: local("Poppins"),
+ url("./Poppins-Light.ttf") format("truetype");
+}
+@font-face {
+  font-family: "SecondaryFont";
+  src:url("./fonts/EBGaramond-VariableFont_wght.ttf")
+}
+@font-face {
+  font-family: "PrimaryFont";
+  src: url("./fonts/Inter-VariableFont_slnt\,wght.ttf");
+}
+@font-face {
+  font-family: "InterBlack";
+  src: url("./fonts/Inter-Black.ttf");
+}
+*,*::after,*::before{
+  box-sizing: border-box;
+}
+body{
+  padding:0px;
+  margin:0px;
+}

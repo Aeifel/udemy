@@ -1,0 +1,123 @@
+.pageContainer {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+}
+.sidebar {
+    flex:1 1 30%;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    overflow-y: scroll;
+    padding:0.5rem 1rem 0 0.1rem;
+}
+.sidebar > div {
+    font-family: "PrimaryFont";
+    font-size: 1.2rem;
+    padding:0.5rem;
+    width: 100%;
+    border:1px solid black;
+    margin-block: 10px;
+    /* margin-bottom: 10px; */
+}
+.description {
+    font-family:"PrimaryFont";
+    font-size:1.3rem;
+    padding:0.5rem;
+}
+.mainContent {
+    flex:1 1 70%;
+    padding:1rem;
+}
+.btn{
+  align-items: center;
+  background-clip: padding-box;
+  background-color: var(--dark);
+  border: 1px solid transparent;
+  border-radius: .25rem;
+  box-shadow: rgba(0, 0, 0, 0.02) 0 1px 3px 0;
+  box-sizing: border-box;
+  color: #fff;
+  cursor: pointer;
+  display: inline-flex;
+  /* font-family: system-ui,-apple-system,system-ui,"Helvetica Neue",Helvetica,Arial,sans-serif; */
+  font-family: "PrimaryFont";
+  font-size: 16px;
+  font-weight: 600;
+  justify-content: center;
+  line-height: 1.25;
+  margin: 0;
+  min-height: 3rem;
+  padding: calc(.875rem - 1px) calc(1.5rem - 1px);
+  position: relative;
+  text-decoration: none;
+  transition: all 250ms;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  vertical-align: baseline;
+  width: auto;
+}
+
+.btn:hover
+/* .mainContent button:focus */
+ {
+  /* background-color: var(--dark); */
+  background-color:rgb(27, 23, 61); 
+  box-shadow: rgba(0, 0, 0, 0.1) 0 4px 12px;
+}
+
+.btn:hover{
+  transform: translateY(-1px);
+}
+.btn:active {
+  background-color: var(--dark);
+  box-shadow: rgba(0, 0, 0, .06) 0 2px 4px;
+  transform: translateY(0);
+}
+.header {
+    padding-block:1rem;
+    padding-inline:1rem;
+    font-size:1.5rem;
+    font-family:"PrimaryFont";  
+    margin-bottom:10px;
+    border-bottom: 1px solid black;
+}
+.contentContainer {
+    min-height: 50vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding:10px;
+}
+.btn {
+  margin: 10px;
+  padding: 15px 30px;
+  text-align: center;
+  text-transform: uppercase;
+  transition: 0.5s;
+  background-size: 200% auto;
+  color: white;
+  border-radius: 10px;
+  /* display: block; */
+  border: 0px;
+  font-weight: 700;
+  box-shadow: 0px 0px 14px -7px var(--dark);
+  background-image: linear-gradient (red 0%, red  51%, red  100%);
+  background-image: linear-gradient(45deg, #2f40ff 0%, #30acff  51%, #2f40ff  100%);
+  cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+}
+
+.btn:hover {
+  background-position: right center;
+  /* change the direction of the change here */
+  color: #fff;
+  text-decoration: none;
+}
+
+.btn:active {
+  transform: scale(0.95);
+}
