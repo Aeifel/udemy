@@ -19,6 +19,16 @@ const CourseCard = (props) => {
   // console.log({ props });
   // const baseUrl1 = "http://localhost:6039/file/download/";
   // const reqUrl = baseUrl1.concat(imageId);
+  //function to get the month and year from json date format
+  const {course} = props;
+  const getMonthYear = (date) => {
+    const dateObj = new Date(date);
+    const month = dateObj.toLocaleString("default", { month: "long" });
+    const year = dateObj.getFullYear();
+    return `${month} ${year}`;
+  };
+  const sample ={"_id":"63e250c6a00fc6b8154cb274","courseTitle":"First course","description":"Fucking awesome first course","language":"English","keypoints":["point1","point2","point3"],"cost":999,"courseImg":"https://res.cloudinary.com/dqib9dtzz/image/upload/v1675776197/tzijskjltqkqzkwlqgfq.png","modules":[],"category":"Python","instructor":{"_id":"63de44ab09f3d3e6c15cd024","insName":"Sudha"},"updatedDate":"2023-02-07T13:23:18.789Z","reviews":[],"__v":0,"numberOfEnrollments":4}
+  const {courseTitle,description,language,keypoints,updatedDate,cost,courseImg,category,instructor,numberOfEnrollments,rating} = course;
   const HtmlTooltip = styled(({ className, ...props }) => (
     <Tooltip {...props} classes={{ popper: className }} />
   ))(({ theme }) => ({
@@ -34,9 +44,9 @@ const CourseCard = (props) => {
   const TooltipValue = (
     <>
     <div className={`${styles.courseContent} ${styles.tooltip}`}>
-            <h3>Python for Beginners - Learn Programming from scratch</h3>
-            <p><span style={{color:"green"}}> Updated November 2022</span></p>
-            <p>Python For Beginners : This course is meant for absolute beginners in programming or in python</p>
+            <h3>{courseTitle}</h3>
+            <p><span style={{color:"green"}}> Updated {getMonthYear(updatedDate)}</span></p>
+            <p>{description}</p>
             <ul>
               <li><DoneIcon
               sx={{fontSize:"1.5rem"}}
@@ -50,33 +60,7 @@ const CourseCard = (props) => {
     </>
   )
   return (
-    // <div class="card" className={styles.card}>
-    //   <div class="content" className={styles.content}>
-    //     <div class="front" className={styles.front}>
-    //       {/* <img src={"http://localhost:6039/file/download/63cd8aa89c75d5347d2afd38"}></img> */}
-    //       <div className={styles.imgContainer}>
-    //         <img src={reqUrl} alt="" className={styles.img} />
-    //       </div>
-    //       <div className={styles.courseDetails}>
-    //         <h2 className={styles.heading}>{courseTitle}</h2>
-    //         <p>{courseDesc}</p>
-    //       </div>
-    //     </div>
-    //     <div class="back" className={styles.back}>
-    //       <h2 className={styles.heading}>{courseTitle ? courseTitle : null}</h2>
-    //       <p>{courseDesc ? courseDesc : null}</p>
-    //       <ul>
-    //         <li>{highlightKeyPoints[0]}</li>
-    //         <li>{highlightKeyPoints[1]}</li>
-    //         <li>{highlightKeyPoints[2]}</li>
-    //       </ul>
-    //       <Link to={`/course/${courseId}`}>
-    //         <button className={styles.viewBtn}>View Course Details</button>
-    //       </Link>
-    //     </div>
-    //   </div>
-    // </div>
-    <>
+   <>
       <HtmlTooltip arrow
       placement="right"
         title={
@@ -88,19 +72,19 @@ const CourseCard = (props) => {
       >
         <div className={styles.courseCard}>
           <div className={styles.courseImg}>
-            <img src="./trial2.jpg"></img>
+            <img src={courseImg}></img>
           </div>
           <div className={styles.courseContent}>
-            <h3>Python for Beginners - Learn Programming from scratch</h3>
-            <p><span style={{color:"rgb(150,150,150"}}>Edwin Diaz</span></p>
+            <h3>{courseTitle}</h3>
+            <p><span style={{color:"rgb(150,150,150"}}>{instructor.insName}</span></p>
             <Rating
-              name="no-value"
+              name={rating}
               value={2.5}
               precision={0.5}
               readOnly
               size="small"
             />
-            <div className={styles.price}>Rs.2,299</div>
+            <div className={styles.price}>{cost}</div>
           </div>
         </div>
       </HtmlTooltip>

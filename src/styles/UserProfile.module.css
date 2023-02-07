@@ -1,0 +1,30 @@
+.profileCard{
+    border-radius: 10px;
+    width: 45%;
+    margin-inline: auto;
+    margin-block:1rem;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;;
+    display: flex;
+    font-family: "PrimaryFont";
+    padding:1rem;
+}
+.coursesEnrolled{
+    padding:20px;
+}
+.coursesEnrolled h2 {
+    font-family: "InterBlack";
+    font-size:2em;
+}
+.gridWrapper{
+			/* --auto-grid-min-size: 16rem; */
+			display: grid;
+			grid-gap: 2rem;
+			grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr));
+			margin: 0;
+			padding: 10px;
+			box-sizing: border-box;
+            width: 90%;
+            margin-inline: auto;
+            background-color: var(--grayLight);
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;;
+}

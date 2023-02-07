@@ -43,21 +43,21 @@ export default function PrimarySearchAppBar(props) {
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
   const [mnavOptions , setNavOptions] = useState(() => {
  });
-  useEffect(()=> {
-    console.log("useEffect called");
-    const fetchFun = async() =>{
-      return await allCoursesApi();
-    }
-   fetchFun().then((response) => {
- let temp = response.data.map((ele) =>  
-    {
-      const {courseId , courseTitle} = ele;
-      return {courseId , courseTitle};
-    }
-    );
-    setNavOptions(temp);
-    });
-  },[]);
+//   useEffect(()=> {
+//     console.log("useEffect called");
+//     const fetchFun = async() =>{
+//       return await allCoursesApi();
+//     }
+//    fetchFun().then((response) => {
+//  let temp = response.data.map((ele) =>  
+//     {
+//       const {courseId , courseTitle} = ele;
+//       return {courseId , courseTitle};
+//     }
+//     );
+//     setNavOptions(temp);
+//     });
+//   },[]);
   const handleSearch = (courseObj) => {
     const {courseId} = courseObj;
     window.location.href = `http://localhost:3000/course/${courseId}`
@@ -128,7 +128,7 @@ export default function PrimarySearchAppBar(props) {
         <p>Profile</p>
       </MenuItem>
       <MenuItem>
-      <Link to="/user/login">
+      <Link to="/login">
        <Button
               variant="outlined"
               sx={{
@@ -142,7 +142,7 @@ export default function PrimarySearchAppBar(props) {
             </Link>
             </MenuItem>
             <MenuItem>
-            <Link to="user/signup">
+            <Link to="/signup">
             <Button
               variant="outlined"
               sx={{
@@ -203,7 +203,7 @@ const defaultProps = mnavOptions;
               }}
               titleAccess="Your purchases"
             /> */}
-            <Link to="user/login">
+            <Link to="/login">
             <Button
               variant="outlined"
               sx={{
@@ -215,7 +215,7 @@ const defaultProps = mnavOptions;
               Login
             </Button>
             </Link>
-            <Link to="user/signup">
+            <Link to="/signup">
             <Button
               variant="outlined"
               sx={{

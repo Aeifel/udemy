@@ -8,10 +8,11 @@ const signupUrl = "user/signup"
 const courseEnrollUrl = "user/register-course"
 const getCourseDetailsUrl = "user-course-details/getall"
 const markReadUrl = "user/update-module-markasread"
-// axios.defaults.headers.post['Access-Control-Allow-Origin'] = '*';
+const getUserCoursesUrl = "user/coursesEnrolled"
+const getUserDetailsUrl = "user/view";
 export const userLoginApi = async(payload) => {
     try{
-    const response = await(axios.post(loginUrl , payload));
+    const response = await(api.post(loginUrl , payload));
     return response;
     }
     catch(err) {
@@ -29,9 +30,21 @@ export const userSignupApi = async(payload) => {
         return err;
     }
 }
+export const getUserDetailsApi = async() => {
+    api.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem("accessToken")}`;
+    try{
+        const response = await api.get(getUserDetailsUrl);
+        return response;
+    }
+    catch(error){
+        console.log(error.message);
+        return error;
+    }
+}
 export const courseEnrollApi = async(payload) => {
+    api.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem("accessToken")}`;
     try {
-        const response = await axios.put(courseEnrollUrl , payload);
+        const response = await api.put(courseEnrollUrl , payload);
         return response;
     } catch (error) {
         console.log(error.message);
@@ -39,9 +52,10 @@ export const courseEnrollApi = async(payload) => {
     }
 }
 export const getCourseDetailsApi = async(payload) => {
+    api.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem("accessToken")}`;
     try {
         console.log(payload);
-        const response = await axios.post(getCourseDetailsUrl , payload);
+        const response = await api.post(getCourseDetailsUrl , payload);
         return response;
     } catch (error) {
         console.log(error.message);
@@ -50,13 +64,25 @@ export const getCourseDetailsApi = async(payload) => {
 
 }
 export const markCompletedApi = async(payload) => {
+    api.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem("accessToken")}`;
     try {
         console.log(payload);
-        const response = await axios.put(markReadUrl , payload);
+        const response = await api.put(markReadUrl , payload);
         return response;
     } catch (error) {
         console.log(error.message);
         return error;
     }
 
+}
+export const getUserCoursesApi   = async() => {
+    api.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem("accessToken")}`;
+    console.log(localStorage.getItem("accessToken"));
+    try {
+        const response = await api.get(getUserCoursesUrl);
+        return response;
+    } catch (error) {
+        console.log(error.message);
+        return error;
+    }
 }

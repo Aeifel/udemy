@@ -24,7 +24,7 @@ function App() {
     <>
     <GlobalStyle/>
     <Router>
-      {/* <PrimarySearchAppBar/> */}
+      <PrimarySearchAppBar/>
       <AllRoutes setNavOptions={setNavOptions}/>
     </Router>
     </>
@@ -36,8 +36,8 @@ const AllRoutes = (props) => {
       <Route path="/" element={<Home setNavOptions={props}/>} />
       <Route path="/signup" element={<ChooseMode/>}/>
       <Route path="/login" element={<ChooseLogin/>}/>
-      <Route path="/user/signup" element={<Signup/>}/>
-      <Route path="/user/login" element={<Login/>}/>
+      <Route path="/student/signup" element={<Signup/>}/>
+      <Route path="/student/login" element={<Login/>}/>
       <Route path="/user/profile" element={<UserProfile/>}/>
       <Route path="/instructor/login" element={<InstructorLogin/>}/>
       <Route path="/instructor/signup" element={<InstructorSingup/>}/>
