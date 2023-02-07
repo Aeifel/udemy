@@ -3,9 +3,15 @@ import DoneIcon from "@mui/icons-material/Done";
 import AddAPhotoIcon from '@mui/icons-material/AddAPhoto';
 import StarIcon from '@mui/icons-material/Star';
 import styles from "../styles/CourseUpload.module.css";
-import { uploadCourseApi } from "../api/coursesApi";
+import { uploadCourseApi } from "../api/CourseApi";
 import {Link} from "react-router-dom";
 import Footer from "../components/Footer";
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import Select from '@mui/material/Select';
+import { CircularSpinner } from "../components/Loaders";
+
 const CourseUpload = () => {
  const courseTitleRef = useRef(null);
   const courseDescRef = useRef(null);
@@ -19,29 +25,36 @@ const CourseUpload = () => {
   const high1Ref = useRef(null);
   const high2Ref = useRef(null);
   const high3Ref = useRef(null);
+  const costRef = useRef(null);
   const uploadedImage = useRef(null);
   const imageUploader = useRef(null);
+  const [category, setCategory] = useState('');
+  const [isLoading , setIsLoading] = useState(false);
   const instructorId= localStorage.getItem("userId");
    const handleCourseRegister = async(e) => {
     e.preventDefault();
+    setIsLoading(true);
     let bodyFormData = new FormData();
-    //course obj
-    const courseObj = {
-      "courseTitle":courseTitleRef.current.value,
-      "courseDesc":courseDescRef.current.value,
-      "courseLang":courseLangRef.current.value,
-      "importantKeyPoints":[imp1Ref.current.value , imp2Ref.current.value , imp3Ref.current.value , imp4Ref.current.value , imp5Ref.current.value , imp6Ref.current.value],
-      "highlightKeyPoints":[high1Ref.current.value , high2Ref.current.value , high3Ref.current.value],
+    let formData = new FormData();
+    const obj = {
+      courseTitle:courseTitleRef.current.value,
+      description:courseDescRef.current.value,
+      language:courseLangRef.current.value,
+      keypoints:[imp1Ref.current.value , imp2Ref.current.value , imp3Ref.current.value , imp4Ref.current.value , imp5Ref.current.value , imp6Ref.current.value],
+      learningPoints:[high1Ref.current.value , high2Ref.current.value , high3Ref.current.value],
+      cost:costRef.current.value,
+      category:category,
     }
-    const imageFile = imageUploader.current.files[0];
-    bodyFormData.append('course' , JSON.stringify(courseObj));
-    bodyFormData.append('imageFile' , imageFile);
-    bodyFormData.append('instructorId' , instructorId);
-    console.log(bodyFormData);
-    const response = await uploadCourseApi(bodyFormData);
+    formData.append('course' , JSON.stringify(obj));
+    formData.append('courseImg' , imageUploader.current.files[0]);
+    const response = await uploadCourseApi(formData);
+    if(response.status == 200){
+    setIsLoading(false);
+    console.log(response.data);
     localStorage.setItem("uploadCourseId" , response.data);
+    window.location.href = "/lessonAdd";
+    }
     console.log(`The response is ${response}`);
-    console.log(courseObj);
   };
   const handleImageUpload = (e) => {
     const [file] = e.target.files;
@@ -56,7 +69,8 @@ const CourseUpload = () => {
     }
   };
   return (
-    <form onSubmit={(e) => handleCourseRegister(e)}>
+    <>
+    {isLoading ? <CircularSpinner/> :   <form onSubmit={(e) => handleCourseRegister(e)}>
       <div className={styles.flexContainer}>
         <div className={styles.leftCol}>
           <div className={styles.header}>
@@ -84,6 +98,22 @@ const CourseUpload = () => {
               ref={courseLangRef}
                placeholder="Course's language"/>
             </div>
+            <FormControl sx={{width:'50%',color:'white' , marginBlock:'10px'}}>
+  <InputLabel id="demo-simple-select-label" sx={{color:'white'}}>Category</InputLabel>
+  <Select
+    labelId="demo-simple-select-label"
+    id="demo-simple-select"
+    value={category}
+    label="Category"
+    sx={{border:'1px solid white',color:'white',width:'100%'}}
+    onChange={ e => setCategory(e.target.value)}
+  >
+    <MenuItem value={"Python"}>Python</MenuItem>
+    <MenuItem value={"Java"}>Java</MenuItem>
+    <MenuItem value={"Machine Learning"}>Machine Learning</MenuItem>
+    <MenuItem value={"Web Development"}>Web Development</MenuItem>
+  </Select>
+</FormControl>
           </div>
           <div className={styles.listContainer}>
             <h2 style={{ fontWeight: "bold" }}>What you'll learn</h2>
@@ -165,17 +195,18 @@ const CourseUpload = () => {
               </div>
             </div>
             <p>Give us the highlighting key points of your course.These will be displayed in the cards of the homepage</p>
-
             <ul>
               <li><StarIcon sx={{fontSize:"1.5rem",color:"var(--dark)"}}/><input type="text" name="impPoint1" id="impPoint1" ref={high1Ref}/></li>
               <li><StarIcon sx={{fontSize:"1.5rem",color:"var(--dark)"}}/><input type="text" name="impPoint2" id="impPoint2" ref={high2Ref}/></li>
               <li><StarIcon sx={{fontSize:"1.5rem",color:"var(--dark)"}}/><input type="text" name="impPoint3" id="impPoint3" ref={high3Ref}/></li>
             </ul>
+            <input type="text" ref={costRef} placeholder="Cost of the course" name="cost" id="cost"/>
           </div>
         </div>
       </div>
       <Footer/>
-    </form>
+    </form>}
+    </>
   );
 };
 export default CourseUpload;

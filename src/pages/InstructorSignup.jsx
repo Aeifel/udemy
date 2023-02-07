@@ -7,6 +7,7 @@ import AddAPhotoIcon from "@mui/icons-material/AddAPhoto";
 import styles from "../styles/InstructorSignup.module.css";
 import { ExpandHoverBtn } from "../components/Buttons";
 import { instructorSignupApi } from "../api/InstructorApi";
+import { CircularSpinner } from "../components/Loaders";
 const InstructorSingup = () => {
   const uploadedImage = useRef(null);
   const imageUploader = useRef(null);
@@ -27,8 +28,10 @@ const InstructorSingup = () => {
   const instructorPasswordRef = useRef(null);
   const instructorWorkRef = useRef(null);
   const instructorAboutRef = useRef(null);
+  const [isLoading , setIsLoading] = useState(false);
   const handleInstructorSignup = async(e) => {
     e.preventDefault();
+    setIsLoading(true);
     const formData = new FormData();
     const obj = {
         insName:instructorNameRef.current.value,
@@ -39,14 +42,20 @@ const InstructorSingup = () => {
         insEmail:instructorEmailRef.current.value,
         insPassword:instructorPasswordRef.current.value
     }
+    console.log(obj);
     formData.append('instructor' , JSON.stringify(obj));
     formData.append('insImage' , imageUploader.current.files[0]);
     const response = await instructorSignupApi(formData);
+    if(response.status === 200){
+      localStorage.setItem('accessToken' , response.data.accessToken);
     console.log(response);
+    window.location.href = "/";
+    }
+    setIsLoading(false);
   }
   return (
     <>
-      <div className={styles.container}>
+    {!isLoading ?<div className={styles.container}>
                 <h4 className={styles.title}>Signup as an instructor</h4>
         <form>
           <div className={styles.firstRow}>
@@ -99,26 +108,26 @@ const InstructorSingup = () => {
               </div>
               <div className={`${styles.row} ${styles.rightCol}`}>
                 <div className={`${styles.inputGroup} ${styles.inputGroupIcon}`}>
-                  <input type="text" placeholder="Full Name" />
+                  <input type="text" placeholder="Full Name" ref={instructorNameRef} />
                   <div className={styles.inputIcon}>
                     {/* <i className="fa fa-user"></i> */}
                     <PersonIcon />
                   </div>
                 </div>
                 <div className={`${styles.inputGroup} ${styles.inputGroupIcon}`}>
-                  <input type="email" placeholder="Email Address" />
+                  <input type="email" placeholder="Email Address" ref={instructorEmailRef}/>
                   <div className={styles.inputIcon}>
                     <EmailOutlinedIcon />
                   </div>
                 </div>
                 <div className={`${styles.inputGroup} ${styles.inputGroupIcon}`}>
-                  <input type="password" placeholder="Password" />
+                  <input type="password" placeholder="Password" ref={instructorPasswordRef}/>
                   <div className={styles.inputIcon}>
                     <KeyIcon />
                   </div>
                 </div>
                 <div className={`${styles.inputGroup} ${styles.inputGroupIcon}`}>
-                  <input type="text" placeholder="Work" />
+                  <input type="text" placeholder="Work" ref={instructorWorkRef} />
                   <div className={styles.inputIcon}>
                     <WorkOutlineOutlinedIcon/>
                   </div>
@@ -126,12 +135,12 @@ const InstructorSingup = () => {
               </div>
           </div>
           <div>
-            <textarea placeholder="Enter a few words about yourself"></textarea>
+            <textarea placeholder="Enter a few words about yourself" ref={instructorAboutRef}></textarea>
           </div>
-          <ExpandHoverBtn text="SignUp"/>
+          <ExpandHoverBtn text="SignUp" onClickEvent={handleInstructorSignup}/>
         </form>
       </div>
-    </>
+    :<CircularSpinner/>}</>
   );
 };
 export default InstructorSingup;

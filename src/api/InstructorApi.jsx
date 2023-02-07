@@ -1,7 +1,7 @@
 import axios from 'axios'
 const api = axios.create({
-  baseURL: 'http:localhost:4001',
-  timeout: 1000,
+  baseURL: 'http://localhost:4000',
+  timeout: 20000000000000000,
 });
 const addCourseUrl = "/course/add";
 const signupUrl = "/instructor/add";
@@ -13,6 +13,7 @@ export const instructorSignupApi= async(payload) => {
     return response;
     }
     catch(err) {
+        console.log("error");
         console.log(err);
     }
 }
