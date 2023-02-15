@@ -51,50 +51,50 @@ const LessonUploadComponent = (props) => {
 //       console.log(response);
 //     });
 //   }
-    const UploadLesson =(e) => {
-        e.preventDefault();
-  const moduleObj = {
-        name:titleRef.current.value,
-        desc:descRef.current.value,
-        courseId:localStorage.getItem("uploadCourseId")
-      }
-      const videoFile = videoRef.current.files[0];
-      const pdfFile = pdfRef.current.files[0];
-      console.log(videoFile);
-      console.log(pdfFile);
-      let bodyFormData = new FormData();
-      bodyFormData.append("courseId" , localStorage.getItem("uploadCourseId"));
-      bodyFormData.append("module" , JSON.stringify(moduleObj));
-      bodyFormData.append("pdfFile" , pdfFile);
-      bodyFormData.append("videoFile" , videoFile);
-      console.log(bodyFormData);
-      uploadModuleApi(bodyFormData).then((resolve) =>
-      {
-        if(resolve.status == 200) {
-            console.log("Lesson updated successfully");
-        }
-      });
-    }
+//     const UploadLesson =(e) => {
+//         e.preventDefault();
+//   const moduleObj = {
+//         name:titleRef.current.value,
+//         desc:descRef.current.value,
+//         courseId:localStorage.getItem("uploadCourseId")
+//       }
+//       const videoFile = videoRef.current.files[0];
+//       const pdfFile = pdfRef.current.files[0];
+//       console.log(videoFile);
+//       console.log(pdfFile);
+//       let bodyFormData = new FormData();
+//       bodyFormData.append("courseId" , localStorage.getItem("uploadCourseId"));
+//       bodyFormData.append("module" , JSON.stringify(moduleObj));
+//       bodyFormData.append("pdfFile" , pdfFile);
+//       bodyFormData.append("videoFile" , videoFile);
+//       console.log(bodyFormData);
+//       uploadModuleApi(bodyFormData).then((resolve) =>
+//       {
+//         if(resolve.status == 200) {
+//             console.log("Lesson updated successfully");
+//         }
+//       });
+//     }
 
     return(
         <div className={styles.formContainer}>
             <div className={styles.row}>
                 <label htmlFor="ModuleTitle">Module Title</label>
-                <input type="text" name="ModuleTitle" id="ModuleTitle" ref={titleRef} placeholder="Enter the lesson's title"/>
+                <input type="text" name="ModuleTitle" id="ModuleTitle" ref={titleRef} placeholder="Enter the lesson's title" key={`title${id}`}/>
             </div>
             <div className={styles.row}>
                 <label htmlFor="ModuleDescription">Module's Description</label>
-                <input type="text" name="ModuleDescription" id="ModuleDescription" ref={descRef} placeholder="Enter a short description of the lesson"/>
+                <input type="text" name="ModuleDescription" id="ModuleDescription" ref={descRef} placeholder="Enter a short description of the lesson" key={`description${id}`}/>
             </div>
             <div className={styles.row}>
                 <label htmlFor="Video">Lesson's Video</label>
-                <input type="file" ref={videoRef}name={`video${id}`} id={`video${id}`} placeholder="Upload the Lesson Video"/>
+                <input type="file" ref={videoRef}name={`video${id}`} id={`video${id}`} placeholder="Upload the Lesson Video" key={`lessonVideo${id}`}/>
             </div>
             <div className={styles.row}>
                 <label htmlFor="Pdf">Lesson's Pdf</label>
-                <input type="file" ref={pdfRef }name={`pdf${id}`} id={`pdf${id}`} placeholder="Upload the lesson pdf"/>
+                <input type="file" ref={pdfRef }name={`pdf${id}`} id={`pdf${id}`} placeholder="Upload the lesson pdf" key={`lessonPdf${id}`}/>
             </div>
-                <button className = {styles.uploadBtn} onClick={ e => UploadLesson(e)}> Upload</button>
+                {/* <button className = {styles.uploadBtn} onClick={ e => UploadLesson(e)}> Upload</button> */}
         </div>
     )
 }

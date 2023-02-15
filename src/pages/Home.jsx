@@ -2,17 +2,17 @@ import MainCarousel from "../components/MainCarousel";
 import styles from "../styles/Home.module.css";
 import MultiCarousel from "../components/MultiCarousel";
 import {Link} from "react-router-dom"
-import { useEffect ,useState} from "react";
-import { allCoursesApi } from "../api/coursesApi";
+import { useEffect ,useState , useMemo} from "react";
+import { getAllCoursesApi } from "../api/CourseApi";
 import { InstructorAlert, LoginAlert } from "../components/Alerts";
 import Footer from "../components/Footer";
-const Home = (props) => {
+import { CircularSpinner } from "../components/Loaders";
+const Home = () => {
   const [allCourses , setCourses] = useState([]);
   const [alertState , setAlertState] = useState(false);
-  const {setNavOptions} = props;
-  console.log(setNavOptions);
+  const [isLoading, setIsLoading] = useState(false);
   const userType = localStorage.getItem("userType");
-  const checkInstructor = (e) => {
+ const checkInstructor = (e) => {
     //const userType = localStorage.getItem("userType");
     //console.log(userType);
     const userType = null;
@@ -21,30 +21,24 @@ const Home = (props) => {
       return;
     }
   }
-  // useEffect(()=> {
-  //   const fetchFun = async() =>{
-  //     return await allCoursesApi();
-  //   }
-  //   const allCourses = fetchFun();
-  //   const {setNavOptions} = props;
-  //   console.log(setNavOptions);
-  //   console.log("Hell");
-  //   allCourses.then((resp) => {
-  //     console.log(resp);
-  //   let temp = resp.data.map((ele) =>  
-  //   {
-  //     console.log("ele");
-  //     console.log(ele);
-  //     const {courseId , courseTitle} = ele;
-  //     return {courseId , courseTitle};
-  //   }
-  //   );
-  //   setNavOptions.setNavOptions(temp);
-  //   setCourses(resp.data);
-  //   });
-  // },[])
-  console.log(allCourses);
+  useEffect(() => {
+    setIsLoading(true);
+    console.log("Home useEffect");
+    const fetchFun = async() => {
+      return await getAllCoursesApi();
+    }
+    fetchFun().then((response) => {
+      console.log(response);
+      setCourses(response.data);
+      console.log(response);
+      setCourses(response.data);
+      setIsLoading(false);
+    })
+  },[]);
+ console.log(allCourses);
   return (
+    <>
+    {isLoading? <CircularSpinner/>:
     <>
     {alertState?InstructorAlert(setAlertState):null}
       <MainCarousel/>
@@ -73,6 +67,8 @@ const Home = (props) => {
         </div>
       </div>
       <Footer/>
+      </>
+        }
     </>
   );
 };

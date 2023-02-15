@@ -1,5 +1,6 @@
 import styles from "../styles/Course.module.css";
-import { useEffect , useState } from "react";
+import { useEffect , useState , useContext } from "react";
+import UserCourseDetails from "../components/UserCourseDetails";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import PersonIcon from "@mui/icons-material/Person";
 import DoneIcon from "@mui/icons-material/Done";
@@ -7,56 +8,34 @@ import { getCourseApi, getModuleApi } from "../api/coursesApi";
 import { courseEnrollApi, getCourseDetailsApi } from "../api/userApi";
 import LessonList from "../components/LessonsList";
 import { InvalidUserTypeAlert, LoginAlert } from "../components/Alerts";
+import { viewCourseApi } from "../api/CourseApi";
+import { DualSpinner } from "../components/Loaders";
+import { CircularSpinner } from "../components/Loaders";
+import Reviews from "../components/Reviews";
 import Footer from "../components/Footer";
+import { SetCourseContext } from "../contexts";
+import BuyCourse from "../components/BuyCourse";
 const Course = () => {
-  const [course , setCourse] = useState({});
-  const [pointsList , setPointsList] = useState([]);
-  const [highPointsList , setHightPointsList] = useState([]);
-  const [moduleList , setModuleList] = useState([]);
+  const [course , setCourse] = useState(null);
   const [alertState , setAlertState] = useState(false);
   const [invalidType , setInvalidType] = useState(false);
   const [userCourseDetails , setUserCourseDetails] = useState({});
   const [enrolled , setEnrolled] = useState(false);
-  const getSingleModule = (course , idx) => {
-    console.log(course);
-    const {modulesList} = course;
-    const ele = modulesList[idx];
-    getModuleApi(ele).then((resolve) => {
-      console.log("hi");
-      const{moduleId , name} = resolve.data;
+  const [isLoading , setIsLoading] = useState(false);
+  const setCourseInterested   = useContext(SetCourseContext);
+ useEffect(() => {
+    setIsLoading(true);
+    const courseId = sessionStorage.getItem('courseId');
+    console.log(courseId);
+    viewCourseApi({courseId:courseId}).then((resolve) => {
       console.log(resolve.data);
-      setModuleList((oldVal) => oldVal?[...oldVal , resolve.data] : [resolve.data]);
-      getSingleModule(course,idx+1);
-    }).catch(err => console.log(err));
-  }
- 
-  // useEffect (() => {
-  //   let url = window.location.href;
-  //   url = url.split('/');
-  //   url = url[url.length-1];
-  //   console.log(url);
-  //   getCourseApi(url).then((resolve) => {
-  //     console.log(resolve.data);
-  //     setCourse(resolve.data);
-  //     setPointsList(resolve.data.importantKeyPoints);
-  //     setHightPointsList(resolve.data.highlightKeyPoints);
-  //     const modulesList = resolve.data.modulesList;
-  //     // modulesList.forEach((ele) => {
-  //     //   getModuleApi(ele).then((response) => {
-  //     //     console.log(response);
-  //     //     setModuleList((oldVal) => [...oldVal , response.data])
-  //     //   }).catch((err) => {
-  //     //     console.log(err); 
-  //     //     console.log("Fetch module failed")
-  //     //   });
-  //     //   console.log(ele);
-  //     // })
-  //     getSingleModule(resolve.data , 0);
-  //   });
-  //   checkEnrollment();
-  // }
-  // ,[]);
-  // console.log(course);
+      setCourse(resolve.data.course);
+      setCourseInterested(resolve.data.course);
+    }).catch((err) => {
+      console.log(err);
+    });
+    setIsLoading(false);
+  },[]);
   const handleCourseEnrollment = async(e) => {
     e.preventDefault();
     const userId = localStorage.getItem("userId");
@@ -81,48 +60,21 @@ const Course = () => {
         window.location.href = temp;
     }
   }
-  const checkEnrollment = async() => {
-    const userId = localStorage.getItem("userId");
-    console.log(`The user id is ${userId}`);
-     let course = window.location.href;
-    course = course.split('/');
-    course = course[course.length-1];
-    let bodyFormData = new FormData();
-    bodyFormData.append('userId' , userId);
-    const response = await getCourseDetailsApi(bodyFormData);
-    if(response.status != 200) {
-      console.log("User is not logged in");
-      return;
-    }
-    else {
-    console.log(response);
-    response.data.forEach((courseDetails) => {
-      const {courseId} = courseDetails;
-      if(courseId == course) {
-        //course the user has enrolled
-        console.log(courseDetails);
-        const {courseCompletedPercentage,modulesCompleted} = courseDetails;
-        setUserCourseDetails({courseCompletedPercentage , modulesCompleted});
-        setEnrolled(true);
-        console.log("UserCourseDetails");
-        console.log(userCourseDetails);
-      }
-    })
- 
-    }
- }
   return (
+   <>
+    {/* {alertState ? LoginAlert(setAlertState) : null} */}
+    {/* {invalidType? InvalidUserTypeAlert(setInvalidType):null} */}
+    {isLoading ? <CircularSpinner/>:
     <>
-    {alertState ? LoginAlert(setAlertState) : null}
-    {invalidType? InvalidUserTypeAlert(setInvalidType):null}
         <div className={styles.header}>
-          <h2>{course.courseTitle}</h2>
+          <h2>{course?course.courseTitle:"Course Title"}</h2>
           <p>
-            {course.courseDesc}
+            {course?course.description:"Course description"}
           </p>
           <div className={styles.details}>
-            <p>Instructor:{course.instructorName}</p>
-            <p>Course Language:{course.courseLang}</p>
+            <p>Instructor:{course?course.instructor?course.instructor.insName:"Instructor point":null}</p>
+            <p>Course Language:{course?course.language:"Course language"}</p>
+            <p>Category:{course?course.category:"Course Category"}</p>
           </div>
         </div>
  
@@ -135,60 +87,71 @@ const Course = () => {
               <div>
                 <li>
                   <DoneIcon sx={{ marginRight: "10px" }} />
-                  {pointsList[0]}
+                  {course?course.keypoints[0]:""}
                 </li>
                 <li>
                   <DoneIcon sx={{ marginRight: "10px" }} />
-                  {pointsList[1]}
+                  {/* {learningPoints[1]} */}
+                  {course?course.keypoints[1]:""}
                 </li>
                 <li>
                   <DoneIcon sx={{ marginRight: "10px" }} />
-                  {pointsList[2]}
+                  {course?course.keypoints[2]:""}
                 </li>
               </div>
               <div>
                 <li>
                   <DoneIcon sx={{ marginRight: "10px" }} />
-                  {pointsList[3]}
+                  {/* {learningPoints[3]} */}
+                  {course?course.keypoints[3]:""}
                 </li>
                 <li>
                   <DoneIcon sx={{ marginRight: "10px" }} />
-                  {pointsList[4]}
+                  {/* {learningPoints[4]} */}
+                  {course?course.keypoints[4]:""}
                 </li>
                 <li>
                   <DoneIcon sx={{ marginRight: "10px" }} />
-                  {pointsList[5]}
+                  {/* {learningPoints[5]} */}
+                  {course?course.keypoints[5]:""}
                 </li>
               </div>
             </div>
         </div>
         <div className={styles.courseContent}>
           <h2>Course Content</h2>
-        <LessonList setAlertState={setAlertState} moduleList={moduleList} moduleCompleted = {userCourseDetails ? userCourseDetails.modulesCompleted : null}/>
+        <LessonList moduleList = {course?course.modules : []} setAlertState={setAlertState} moduleCompleted = {userCourseDetails ? userCourseDetails: null}/>
         </div>
      </div>
       <div className={styles.rightCol}>
         {/* <div className={styles.filler}></div> */}
         <div className={styles.courseCard}>
-          <img src={`http://localhost:6039/file/download/${course.imageId}`} style={{
+          <img src={`${course ?course.courseImg:''}`} style={{
             width:"100%",
             height:"200px"
           }}></img>
-          <h2>{course.courseTitle}</h2>
-          <p>Number of Enrollments:{course.numberOfStudentsRegistered}</p>
+          <h2>{course? course.courseTitle:'Course Title'}</h2>
+          <p>Number of Enrollments:{course?course.numberOfEnrollments:null}</p>
           <ul>
-            <li>{highPointsList[0]}</li>
-            <li>{highPointsList[1]}</li>
-            <li>{highPointsList[2]}</li>
+            <li>{course?course.learningPoints[0]:null}</li>
+            <li>{course?course.learningPoints[1]:null}</li>
+            <li>{course?course.learningPoints[2]:null}</li>
           </ul>
-          {enrolled == false? 
+          {/* {enrolled == false? 
           <button onClick = {(e) => handleCourseEnrollment(e)} className={styles.enrollBtn}> Enroll Now</button>:
             <p>Course completed percentage:{userCourseDetails.courseCompletedPercentage}</p>
-          }
+          } */}
+          <p>Cost:{course?course.cost:null}</p>
+          <UserCourseDetails setUserCourseDetails={setUserCourseDetails} course={course}/>
         </div>
       </div>
     </div>
+    <div>
+      <Reviews reviews = {course?course.reviews?course.reviews:null:null} userCourseDetails = {userCourseDetails}/>
+    </div>
       <Footer/>
+    </>
+    }
     </>
   );
 };

@@ -1,4 +1,3 @@
-//receive props and get content
 import styles from "../styles/CourseCard.module.css";
 import { Link } from "react-router-dom";
 import { styled } from "@mui/material/styles";
@@ -27,8 +26,13 @@ const CourseCard = (props) => {
     const year = dateObj.getFullYear();
     return `${month} ${year}`;
   };
-  const sample ={"_id":"63e250c6a00fc6b8154cb274","courseTitle":"First course","description":"Fucking awesome first course","language":"English","keypoints":["point1","point2","point3"],"cost":999,"courseImg":"https://res.cloudinary.com/dqib9dtzz/image/upload/v1675776197/tzijskjltqkqzkwlqgfq.png","modules":[],"category":"Python","instructor":{"_id":"63de44ab09f3d3e6c15cd024","insName":"Sudha"},"updatedDate":"2023-02-07T13:23:18.789Z","reviews":[],"__v":0,"numberOfEnrollments":4}
-  const {courseTitle,description,language,keypoints,updatedDate,cost,courseImg,category,instructor,numberOfEnrollments,rating} = course;
+  const directToCoursePage = () => {
+    const {_id} = course;
+    console.log(_id);
+    sessionStorage.setItem("courseId",_id);
+    window.location.href="/course/";
+  }
+  const {_id,courseTitle,description,language,keypoints,updatedDate,cost,courseImg,category,instructor,numberOfEnrollments,rating} = course;
   const HtmlTooltip = styled(({ className, ...props }) => (
     <Tooltip {...props} classes={{ popper: className }} />
   ))(({ theme }) => ({
@@ -55,7 +59,10 @@ const CourseCard = (props) => {
             sx={{fontSize:"1.5rem"}}
             />To learn the CORE skills to understand any programming language</li>
             </ul>
-            <ExpandHoverBtn text="View Course Details" backgroundColor="white" color="var(--textSecondary)" onClickEvent={null}/>
+            {/* <ExpandHoverBtn text="View Course Details" backgroundColor="white" color="var(--textSecondary)" onClickEvent={}/> */}
+            <Link onClick={ (e) => {
+              sessionStorage.setItem("courseId",_id);
+            }} to="/course">View Course Details</Link>
     </div>
     </>
   )

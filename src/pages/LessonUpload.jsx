@@ -48,8 +48,11 @@ const LessonUpload = () => {
   // }
   const handleUploadLesson = async( e , idx) => {
     e.preventDefault();
+    if(idx == 0){
     setIsLoading(true);
-    const {titleRef , descRef , videoRef , pdfRef} = fileRefs[idx];
+    }
+    console.log(fileRefs);
+    const {titleRef , descRef , videoRef , pdfRef} = fileRefs [idx];
 const obj = {
   title:titleRef.current.value,
   description:descRef.current.value,
@@ -59,23 +62,21 @@ formData.append('lesson' , JSON.stringify(obj));
 formData.append('pdfFile' , pdfRef.current.files[0]);
 formData.append('videoFile' , videoRef.current.files[0]);
 formData.append('courseId' , localStorage.getItem("uploadCourseId"));
+console.log(formData);
 const response = await uploadLessonApi(formData);
 if(idx < fileRefs.length-1) {
+  console.log(response);
   handleUploadLesson(e,idx+1);
+  console.log("here");
   }
-else{
+else {
   setIsLoading(false);
   return;
 }
   }
-
-  return (
-    <>
-    {isLoading?
-    <CircularSpinner/>: 
-     <>
+const pageData = (
+  <>
     <div style={{background:"rgb(240,240,240,0.7)"}}>
-    <form>
       <div className={styles.componentContainer}>
         {Lessons.map((Component, i) => {
           return Component;
@@ -96,12 +97,16 @@ else{
      2. Upload All
     </span>
   </button>
-</div>
-    </form>
+</div>  
+{isLoading? <CircularSpinner/> : null}
       <Footer/>
     </div>
-    </>}
     </>
+)
+  return (
+    <>
+    {pageData}
+   </>
   );
 };
 export default LessonUpload;

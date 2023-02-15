@@ -1,0 +1,22 @@
+.reviewContainer {
+    margin:1rem;
+    background-color: var(--grayLight);
+    gap: 20px;
+    width: 80%;
+    margin-inline: auto;
+    max-height: 1000px;
+    overflow-y: auto;
+}
+.reviewCard {
+    /* display: flex; */
+    flex-direction: row;
+    align-items: center;
+    width: 100%;
+    font-family: "PrimaryFont";
+    font-size:1.3rem;
+    border:1px solid var(--textPrimary);    
+    line-height: 1rem;
+    margin-bottom: 10px;
+}
+.rightCol {
+}

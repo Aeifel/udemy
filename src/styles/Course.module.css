@@ -25,7 +25,7 @@
     position: sticky;
     top:0;
     background-color: white;
-    margin-top:-1px;
+    margin-top:-6rem;
     font-family: "PrimaryFont";
     box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
 } 
@@ -82,7 +82,7 @@
     margin-block:20px;
     font-family: "PrimaryFont";
     padding: 2rem;
-    background-color: white;
+    background-color: #f7f9fa;
     border-radius: 10px;
     box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
 }

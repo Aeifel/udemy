@@ -2,92 +2,41 @@ import LessonVideo from "../components/LessonVideo";
 import PdfRenderer from "../components/PdfRenderer";
 import { useState, useEffect } from "react";
 import styles from "../styles/Lesson.module.css";
+import LoadingButton from '@mui/lab/LoadingButton';
 import { getCourseApi, getModuleApi } from "../api/coursesApi";
-import { getCourseDetailsApi, markCompletedApi } from "../api/userApi";
 import { Link } from "react-router-dom";
 import LessonsSidebar from "../components/LessonsSidebar";
 import CompletedBtn from "../components/CompletedBtn";
 import Footer from "../components/Footer";
+import { getLessonApi } from "../api/CourseApi";
+import { markCompletedApi } from "../api/CourseApi";
+import { CircularProgress } from "@mui/material";
 const Lesson = () => {
   const [videoState, setVideoState] = useState(true);
-  const [course, setCourse] = useState({});
-  const [lesson, setLesson] = useState({});
+  const [lesson, setLesson] = useState(null);
   const [moduleList, setModuleList] = useState([]);
-  const [userCompletion , setUserCompletion] = useState([]);
   const [completed , setCompleted] = useState(false);
-  const userId = localStorage.getItem("userId");
-  console.log(userId);
-  const findLessonId = () => {
-    let lessonId = window.location.href;
-    lessonId = lessonId.split("/");
-    lessonId = lessonId[lessonId.length - 1];
-    return lessonId;
-  };
-  const findCurrentLesson = async () => {
-    const currentId = findLessonId();
-    //need the course id now shite
-  };
-  const getSingleModule = (course , idx) => {
-    // if(idx > course.modulesList.length){
-    //   return;
-    // }
-    console.log(course);
-    const {modulesList} = course;
-    const ele = modulesList[idx];
-    getModuleApi(ele).then((resolve) => {
-      console.log("hi");
-      const{moduleId , name} = resolve.data;
-      console.log(resolve.data);
-      setModuleList((oldVal) => oldVal?[...oldVal , {moduleId , name}] : [{moduleId,name}]);
-      getSingleModule(course,idx+1);
-    }).catch(err => console.log(err));
+   const handleMarkCompleted = async(e) => {
+    e.preventDefault();
+    const response = await markCompletedApi();
+    if (response.status === 200) {
+      setCompleted(true);
+    }
+    console.log(response);
   }
-  // const getModulesList = async (course) => {
-  //   const { modulesList } = course;
-  //   let moduleArr = [];
-  //   modulesList.forEach(async (ele) => {
-  //     const response = await getModuleApi(ele);
-  //     const { moduleId, name } = response.data;
-  //     setModuleList((oldVal) => oldVal?[...oldVal , {moduleId , name}] : [{moduleId,name}]);
-  //     moduleArr.push({ moduleId, name });
-  //   });
-  //   return moduleArr;
-  // };
-  const fetchAll = async () => {
-  let lessonId = window.location.href;
-    lessonId = lessonId.split("/");
-    lessonId = lessonId[lessonId.length - 1];
-    console.log(lessonId);
-    let myLesson;
-    let myCourse;
-    let mymoduleList;
-    getModuleApi(lessonId).then((resolve) => {
-      myLesson = resolve.data;
-    setLesson(myLesson);
-      const { courseId } = resolve.data;
-      getCourseApi(courseId).then((resolve) => {
-        console.log("1");
-        console.log(resolve.data);
-        myCourse = resolve.data;
-    setCourse(myCourse);
-      let bodyFormData = new FormData();
-      bodyFormData.append('userId' ,localStorage.getItem("userId") );
-      getCourseDetailsApi(bodyFormData).then((resolve) => {
-        console.log("Deta");
-        console.log(resolve.data);
-        console.log(course.courseId);
-        setUserCompletion(resolve.data);
-        console.log(userCompletion);
-      })
-        // setCourse(resolve.data);
-        getSingleModule(resolve.data , 0);
-        console.log("2");
-        // console.log(response);
-      });
-   });
-  };
+  const handleLessonChange = (e) =>{
+  getLessonApi().then((response) => {
+      console.log(response);
+      setLesson(response.data.module);
+      setCompleted(response.data.module.completion);
+    })
+  }
   useEffect(() => {
-    fetchAll()
+    getLessonApi().then((response) => {
+      console.log(response);
+      setLesson(response.data.module);
+      setCompleted(response.data.module.completion);
+    })
   },[]);
   const handleVideoClick = (e) => {
     setVideoState(true);
@@ -97,56 +46,58 @@ const Lesson = () => {
   };
 return (
     <>
+    {lesson ? 
+    <>
       <div className={styles.header}>
-        {course ? course.courseTitle: "Loading failed"} : {lesson?lesson.name:"Loading faile"}
+        {/* {course ? course.courseTitle: "Loading failed"} : {lesson?lesson.title:"Loading faile"} */}
+        {lesson?lesson.title:null}
       </div>
       <div className={styles.pageContainer}>
         <div className={styles.sidebar}>
-            <LessonsSidebar moduleList={moduleList} umodulesCompleted={userCompletion.filter(ele => ele.courseId == course.courseId)}/>
-          {/* {
-          moduleList
-            ? moduleList.map((ele , index) => <div onClick ={(e) => handleLessonChange(ele.moduleId)}>{ele.name}
-      {userCompletion.map((ele , sindex) => {
-            if(ele.courseId == course.courseId &&index==sindex){
-                return ele.modulesCompleted.map((ele) => {
-                    return ele? "true" : "false";
-                })
-            }
-            {
-                userCompletion.filter((ele , index) => {
-                    ele.c
-                })
-            }
-            return null;
-        })}
-            
-            </div>)
-            :null} */}
-       
+          <LessonsSidebar handleLessonChange={handleLessonChange}/> 
         </div>
         <div
         >
        </div>
         <div className={styles.mainContent}>
           <p className={styles.description}>
-            {lesson?lesson.desc:"Loading failed"}
+            {lesson?lesson.description:"Loading failed"}
           </p>
           <button className={styles.btn}onClick={(e) => handleVideoClick(e)}>Video</button>
           <button className={styles.btn}onClick={(e) => handlePdfClick(e)}> Pdf Materials</button>
           <div className={styles.contentContainer}>
             {videoState ? (
               <LessonVideo
-                VideoUrl={`http://localhost:6039/file/download/${lesson ? lesson.videoContent: ""}`}
+                VideoUrl={`${lesson ? lesson.videoUrl: ""}`}
               />
             ) : (
               <PdfRenderer
-                PdfUrl={`http://localhost:6039/file/download/${lesson?lesson.pdfContent:""}`}
+                PdfUrl={`${lesson?lesson.pdfUrl:""}`}
               />
             )}
           </div>
-          <CompletedBtn moduleList = {moduleList} course={course} findLessonId={findLessonId} setCompleted={setCompleted} userCompletion ={userCompletion.filter(ele => ele.courseId ==course.courseId)} currentId = {findLessonId()}/>
+          {/* <CompletedBtn moduleList = {moduleList} course={course} findLessonId={findLessonId} setCompleted={setCompleted} userCompletion ={userCompletion.filter(ele => ele.courseId ==course.courseId)} currentId = {findLessonId()}/> */}
+          {completed == false?<div>
+            <button onClick = {e => handleMarkCompleted(e)}>Mark as completed</button>
+          </div>:<div>Completed</div>}
+          <div>
+            {lesson.prev ? <button
+            onClick = { e => {
+              sessionStorage.setItem("lessonId",lesson.prev);
+              handleLessonChange(e);
+            }}
+            >Previous</button>:null}
+            {lesson.next ?<button
+            onClick = { e => {
+              sessionStorage.setItem("lessonId",lesson.next);
+              handleLessonChange(e);
+            }}
+            >Next</button>:null}
+          </div>
         </div>
       </div>
+      </>
+      :<CircularProgress/>}
       <Footer/>
     </>
   );

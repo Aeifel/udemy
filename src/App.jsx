@@ -15,25 +15,45 @@ import './App.css'
 import PrimarySearchAppBar from './components/Navbar1';
 import Footer from './components/Footer';
 import LessonUpload from './pages/LessonUpload';
-import { useState } from 'react';
+import { useState,useEffect,useContext,useMemo } from 'react';
+import { createContext } from 'react';
+import { getNavOptionsApi } from './api/CourseApi';
 import ChooseMode from './pages/ChooseMode';
 import ChooseLogin from './pages/ChooseLogin';
+import { CourseContext ,SetCourseContext} from './contexts';
 function App() {
   const [navOptions , setNavOptions] = useState([]);
+  const [courseInterested , setCourseInterested] = useState(null);
+  useEffect (() => {
+    console.log("fetching nav options");
+    getNavOptionsApi().then((response) => {
+     setNavOptions(response.data);
+      console.log(response);
+    })
+  },[])
+  // useMemo (() => {
+  // },[navOptions])
+  // navOptions = useMemo(() => {
+  //   return navOptions;
+  // } , [nak])
   return (
     <>
     <GlobalStyle/>
+    <SetCourseContext.Provider value = {setCourseInterested}>
+    <CourseContext.Provider value = {courseInterested}>
     <Router>
-      <PrimarySearchAppBar/>
-      <AllRoutes setNavOptions={setNavOptions}/>
+      <PrimarySearchAppBar navOptions={navOptions}/>
+      <AllRoutes/>
     </Router>
+    </CourseContext.Provider>
+    </SetCourseContext.Provider>
     </>
   );
 }
 const AllRoutes = (props) => {
   return (
     <Routes>
-      <Route path="/" element={<Home setNavOptions={props}/>} />
+      <Route path="/" element={<Home instance={1}/>} />
       <Route path="/signup" element={<ChooseMode/>}/>
       <Route path="/login" element={<ChooseLogin/>}/>
       <Route path="/student/signup" element={<Signup/>}/>
@@ -41,8 +61,8 @@ const AllRoutes = (props) => {
       <Route path="/user/profile" element={<UserProfile/>}/>
       <Route path="/instructor/login" element={<InstructorLogin/>}/>
       <Route path="/instructor/signup" element={<InstructorSingup/>}/>
-      <Route path="/course/:id/" element={<Course/>}/>
-      <Route path="/lesson/:id/" element={<Lesson/>}/>
+      <Route path="/course/" element={<Course/>}/>
+      <Route path="/lesson/" element={<Lesson/>}/>
       <Route path="/courseRegister/" element={<CourseUpload/>}/>
       <Route path="/lessonAdd/" element={<LessonUpload/>}/>
       {/* <Route path="/" element={<Test/>}/> */}

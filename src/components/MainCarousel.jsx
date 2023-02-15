@@ -22,8 +22,8 @@ const Slide1 = () => {
 const Slide2 = () => {
   return (
     <div
-      className={styles.slideContainer2}
-      style={{ backgroundImage: "url(/trial3.jpg)" }}
+      className={styles.slideContainer1}
+      style={{ backgroundImage: "url(/carousel2.png)" }}
     >
       <div>
         <div className={styles.content2}>
@@ -47,7 +47,6 @@ const MainCarousel = () => {
           marginTop: "-50px", // 5
         },
       }}
-      navButtonsAlwaysVisible
       autoPlay={true}
       interval={2500}
     >

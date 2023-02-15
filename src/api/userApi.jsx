@@ -5,11 +5,12 @@ const api = axios.create({
 });
 const loginUrl = "user/login"
 const signupUrl = "user/signup"
-const courseEnrollUrl = "user/register-course"
+const courseEnrollUrl = "course/enrollCourse"
 const getCourseDetailsUrl = "user-course-details/getall"
 const markReadUrl = "user/update-module-markasread"
 const getUserCoursesUrl = "user/coursesEnrolled"
 const getUserDetailsUrl = "user/view";
+const getUserCourseDetailsUrl = "/user/completionDetails";
 export const userLoginApi = async(payload) => {
     try{
     const response = await(api.post(loginUrl , payload));
@@ -44,7 +45,7 @@ export const getUserDetailsApi = async() => {
 export const courseEnrollApi = async(payload) => {
     api.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem("accessToken")}`;
     try {
-        const response = await api.put(courseEnrollUrl , payload);
+        const response = await api.post(courseEnrollUrl , {courseId:sessionStorage.getItem("courseId")});
         return response;
     } catch (error) {
         console.log(error.message);
@@ -85,4 +86,16 @@ export const getUserCoursesApi   = async() => {
         console.log(error.message);
         return error;
     }
+}
+export const getUserCourseDetailsApi = async(payload) => {
+    api.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem("accessToken")}`;
+    // try{
+    const response = await api.post(getUserCourseDetailsUrl ,{courseId: sessionStorage.getItem("courseId")});
+    return response;
+    // }
+//     catch(error) {
+//         console.log('error catched')
+//         console.log(error.message);
+//         return error;
+//     }
 }
