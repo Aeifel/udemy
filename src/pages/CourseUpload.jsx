@@ -52,7 +52,7 @@ const CourseUpload = () => {
     if(response.status == 200){
     setIsLoading(false);
     console.log(response.data);
-    localStorage.setItem("uploadCourseId" , response.data);
+    localStorage.setItem("uploadCourseId" , response.data.courseId);
     navigate('/lessonAdd')
     }
     console.log(`The response is ${response}`);
