@@ -19,6 +19,22 @@
     align-items: row;
     overflow-x: hidden;
 } */
+.categoryGrid{
+    width: 90%;
+    margin-inline:auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      /* grid-template-columns: 1fr 1fr 1fr 1fr; */
+}
+.categoryGrid p {
+    font-family: "PrimaryFont";
+    font-size:1.2rem;
+    font-weight: bolder;
+    margin-top:0px;
+}
+.categoryImg{
+    width: 275px;
+}
 .flexContainer{
     padding:2rem;
     display: flex;
@@ -49,4 +65,13 @@
 .insContent button:hover {
     cursor:pointer;
     background-color: black;
+}
+.studentPanel,.instructorPanel{
+    background-color: #F7F9FA;
+    margin-left: 20px;
+    font-family: "PrimaryFont";
+}
+.studentPanel h2 , .instructorPanel h2{
+    font-family: "SecondaryFont";
+    font-size:2rem;
 }

@@ -1,7 +1,6 @@
 import Carousel from "react-material-ui-carousel";
 import styles from "../styles/MainCarousel.module.css";
-import { Paper, Button } from "@mui/material";
-import { purple } from "@mui/material/colors";
+
 const Slide1 = () => {
   return (
     <>

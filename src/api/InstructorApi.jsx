@@ -1,8 +1,5 @@
-import axios from 'axios'
-const api = axios.create({
-  baseURL: 'http://localhost:4000',
-  timeout: 20000000000000000,
-});
+import api from './axios';
+
 const addCourseUrl = "/course/add";
 const signupUrl = "/instructor/add";
 const loginUrl = "/instructor/login";

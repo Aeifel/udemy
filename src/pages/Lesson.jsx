@@ -6,11 +6,14 @@ import LoadingButton from '@mui/lab/LoadingButton';
 import { getCourseApi, getModuleApi } from "../api/coursesApi";
 import { Link } from "react-router-dom";
 import LessonsSidebar from "../components/LessonsSidebar";
+import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
+import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import CompletedBtn from "../components/CompletedBtn";
 import Footer from "../components/Footer";
 import { getLessonApi } from "../api/CourseApi";
 import { markCompletedApi } from "../api/CourseApi";
 import { CircularProgress } from "@mui/material";
+import { CircularSpinner } from "../components/Loaders";
 const Lesson = () => {
   const [videoState, setVideoState] = useState(true);
   const [lesson, setLesson] = useState(null);
@@ -78,27 +81,72 @@ return (
           </div>
           {/* <CompletedBtn moduleList = {moduleList} course={course} findLessonId={findLessonId} setCompleted={setCompleted} userCompletion ={userCompletion.filter(ele => ele.courseId ==course.courseId)} currentId = {findLessonId()}/> */}
           {completed == false?<div>
-            <button onClick = {e => handleMarkCompleted(e)}>Mark as completed</button>
-          </div>:<div>Completed</div>}
-          <div>
+            <button onClick = {e => handleMarkCompleted(e)}
+            className={styles.completedBtn}
+            >Mark as completed</button>
+          </div>:<div
+          style = {{
+            color:'green',
+            fontFamily:'PrimaryFont',
+            fontSize:'1.2rem',
+            margin:'1rem'
+          }}
+          >Completed</div>}
+          <div className={styles.btnContainer}>
             {lesson.prev ? <button
             onClick = { e => {
               sessionStorage.setItem("lessonId",lesson.prev);
               handleLessonChange(e);
             }}
-            >Previous</button>:null}
+            style={{
+              background:'transparent',
+              color:'var(--textSecondary) ',
+              border:'none',
+              fontSize:'1.2rem',
+              display:'flex',
+              alignItems:'center',
+              marginBlock:'1rem'
+            }}
+            ><ArrowBackIosIcon/>Previous</button>:null}
             {lesson.next ?<button
             onClick = { e => {
               sessionStorage.setItem("lessonId",lesson.next);
               handleLessonChange(e);
             }}
-            >Next</button>:null}
+            style={{
+              background:'transparent',
+              color:'var(--textSecondary) ',
+              border:'none',
+              fontSize:'1.2rem',
+              display:'flex',
+              alignItems:'center',
+              marginBlock:'1rem'
+            }}
+ 
+            >Next<ArrowForwardIosIcon/> </button>:null}
+            {/* <button
+            onClick = { e => {
+              sessionStorage.setItem("lessonId",lesson.next);
+              handleLessonChange(e);
+            }}
+            style={{
+              background:'transparent',
+              color:'var(--textSecondary) ',
+              border:'none',
+              fontSize:'1.2rem',
+              display:'flex',
+              alignItems:'center',
+              marginBlock:'1rem'
+            }}
+ 
+            >Next<ArrowForwardIosIcon/> </button> */}
+ 
           </div>
         </div>
       </div>
       </>
-      :<CircularProgress/>}
-      <Footer/>
+      :<CircularSpinner/>}
+      {/* <Footer/> */}
     </>
   );
 };

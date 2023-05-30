@@ -1,17 +1,71 @@
-import { useEffect,useState } from "react";
+import { useEffect,useState , useContext } from "react";
 import { getUserCourseDetailsApi } from "../api/userApi";
 import BuyCourse from "./BuyCourse";
+import * as React from 'react';
+import PropTypes from 'prop-types';
+import CircularProgress from '@mui/material/CircularProgress';
+import Typography from '@mui/material/Typography';
+import Box from '@mui/material/Box';
+import { CourseContext} from "../contexts/CourseContext";
+import { AuthContext } from "../contexts/AuthContext";
+function CircularProgressWithLabel(props) {
+  return (
+    <Box sx={{ position: 'relative', display: 'inline-flex' }}>
+      <CircularProgress variant="determinate" {...props}
+      sx = {{color : "green"}}
+      />
+      <Box
+        sx={{
+          top: 0,
+          left: 0,
+          bottom: 0,
+          right: 0,
+          position: 'absolute',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
+      >
+        <Typography variant="caption" component="div" sx = {{
+            color: "green",
+        }}>
+          {`${Math.round(props.value)}%`}
+        </Typography>
+      </Box>
+    </Box>
+  );
+}
+
+CircularProgressWithLabel.propTypes = {
+  /**
+   * The value of the progress indicator for the determinate variant.
+   * Value between 0 and 100.
+   * @default 0
+   */
+  value: PropTypes.number.isRequired,
+};
+const CircularStatic = ({courseCompletionDetails}) => {
+  let total = courseCompletionDetails.length;
+  courseCompletionDetails = courseCompletionDetails.filter((course) => course == true);
+  const percentCompleted = courseCompletionDetails.length/total * 100;
+  console.log(percentCompleted);
+  const [progress, setProgress] = React.useState(10);
+ return <CircularProgressWithLabel value={percentCompleted } />;
+}
 const UserCourseDetails = (props) => {
     const {setUserCourseDetails , course} = props;
-    const [userState , setUserState] = useState({});
+    const [userState , setUserState] = useState(null);
     const [courseCompletionDetails , setCourseCompletionDetails] = useState(null);
+    const {auth , type} = useContext(AuthContext);
+    const {access} = useContext(CourseContext);
     const fetchFun = async() =>{
         try{
         const response = await getUserCourseDetailsApi();
         console.log(response);
         console.log("user enrolled course");
-        setUserState("enrolled");
-        // setCourseCompletionDetails(response.data.completionDetails);
+        setUserState((oldVal) => "enrolled");
+        console.log(userState); 
+        setCourseCompletionDetails(response.data.completionDetails);
         setUserCourseDetails(response.data.completionDetails);
         }
         catch(err){
@@ -32,12 +86,18 @@ const UserCourseDetails = (props) => {
         console.log(courseCompletionDetails);
     } , [])
     return(
-        <>
-        <p>{JSON.stringify(courseCompletionDetails)}</p>
-        {userState === "enrolled" && courseCompletionDetails === null? <p>{JSON.stringify(courseCompletionDetails)}</p> :
-        userState ==="notAuthorized" && courseCompletionDetails=== null? <p>Login to buy this course</p>:
-        userState === "notEnrolled" && courseCompletionDetails === null ?<BuyCourse course = {course} setUserCourseDetails={setUserCourseDetails} setCourseCompletionDetails= {setCourseCompletionDetails}/> : null
-        }
+        <>{
+          !auth? <p>Login to buy this course</p>:
+          auth && type==="instructor" ? <p>As an instructor you can't buy this course</p>:
+          auth && type === "student" && !access? <BuyCourse course={course} setCourseCompletionDetails={setCourseCompletionDetails} setUserCourseDetails={setUserCourseDetails}/>:
+          access?  <p
+        style = {{
+            display : "flex",
+            alignItems : "center",
+        }}
+        ><CircularStatic courseCompletionDetails={courseCompletionDetails}/>Completed</p>
+        
+        :null}
         </>
     )
 }

@@ -1,8 +1,5 @@
-import axios from "axios";
-const api = axios.create({
-  baseURL: 'http://localhost:4000/',
-  timeout: 200000,
-});
+import api from "./axios";
+
 const loginUrl = "user/login"
 const signupUrl = "user/signup"
 const courseEnrollUrl = "course/enrollCourse"
@@ -11,6 +8,9 @@ const markReadUrl = "user/update-module-markasread"
 const getUserCoursesUrl = "user/coursesEnrolled"
 const getUserDetailsUrl = "user/view";
 const getUserCourseDetailsUrl = "/user/completionDetails";
+const getLoginDetailsUrl = "/user/userStatus";
+const checkEnrollmentUrl = "/user/checkEnrollment";
+
 export const userLoginApi = async(payload) => {
     try{
     const response = await(api.post(loginUrl , payload));
@@ -98,4 +98,27 @@ export const getUserCourseDetailsApi = async(payload) => {
 //         console.log(error.message);
 //         return error;
 //     }
+}
+export const getLoginDetailsApi = async() => {
+    api.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem("accessToken")}`;
+    try{
+        const response = await api.get(getLoginDetailsUrl);
+        return response;
+    }
+    catch(error){
+        console.log(error.message);
+        return error;
+    }
+}
+
+export const checkEnrollmentApi = async(data) => {
+    api.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem("accessToken")}`;
+    try{
+        const response = await api.post(checkEnrollmentUrl,data);
+        return response;
+    }
+    catch(error){
+        console.log(error.message);
+        return error;
+    }
 }

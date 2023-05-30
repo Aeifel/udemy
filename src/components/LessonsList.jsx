@@ -1,3 +1,4 @@
+import { useContext } from "react";
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import styles from "../styles/LessonElement.module.css";
@@ -5,10 +6,10 @@ import TaskAltIcon from '@mui/icons-material/TaskAlt';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import PendingIcon from '@mui/icons-material/Pending';
 import { LoginAlert } from "./Alerts";
-import { useEffect } from "react";
+import { CourseContext } from "../contexts/CourseContext";
 const LessonList = (props) => {
   const { moduleList, moduleCompleted, setAlertState } = props;
-  console.log(moduleList);
+  const {access} = useContext(CourseContext);
   const handleLessonClick = (e) => {
     console.log(e);
     const {moduleId} = e;
@@ -26,7 +27,7 @@ const LessonList = (props) => {
         const { _id:moduleId, title:name } = ele;
         return (
           <>
-          <Link onClick = {e => {
+          {access && <Link onClick = {e => {
             sessionStorage.setItem("lessonId" , moduleId);
           }
         }to = "/lesson">
@@ -34,12 +35,15 @@ const LessonList = (props) => {
               className={styles.lessonComponent}
               onClick={(e) => handleLessonClick({moduleId})}
             >
-              {moduleCompleted?!moduleCompleted[idx]?<CheckCircleIcon
+              {moduleCompleted?moduleCompleted[idx]?<CheckCircleIcon
               sx={{color:"#1d7c50",fontSize:"2rem",}}
               />:null:null}
               <p>{name}</p>
            </div>
-           </Link>
+           </Link>}
+           {!access && <div className={styles.lessonComponent}>
+            <p>{name}</p>
+            </div>}
           </>
         );
       })}

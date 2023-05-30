@@ -11,7 +11,7 @@ const ChooseMode = () => {
   };
   const handleStudentClick = () => {
     setDisabled(false);
-    setRoute("/user/signup");
+    setRoute("/student/signup");
   };
   const disabledBtn = (
     <>

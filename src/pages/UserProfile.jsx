@@ -30,7 +30,7 @@ const UserProfile = () => {
     <>
       <div className={styles.profileCard}>
         <Avatar
-          alt="Remy Sharp"
+          alt="User"
           src={userDetails.profileImg}
           sx={{ width: "100px", height: "100px",marginInline:"20px" }}
         />

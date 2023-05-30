@@ -6,47 +6,44 @@ import Home from './pages/Home';
 import Course from './pages/Course';
 import Lesson from './pages/Lesson';
 import Test from './pages/Test';
+
+import { ToastContainer } from 'react-toastify';
 import InstructorSingup from './pages/InstructorSignup';
 import InstructorLogin from './pages/InstructorLogin';
 import CourseUpload from './pages/CourseUpload';
 import GlobalStyle from './globalStyles';
 import UserProfile from './pages/UserProfile';
 import './App.css'
+import 'react-toastify/dist/ReactToastify.css';
 import PrimarySearchAppBar from './components/Navbar1';
-import Footer from './components/Footer';
 import LessonUpload from './pages/LessonUpload';
 import { useState,useEffect,useContext,useMemo } from 'react';
-import { createContext } from 'react';
 import { getNavOptionsApi } from './api/CourseApi';
 import ChooseMode from './pages/ChooseMode';
 import ChooseLogin from './pages/ChooseLogin';
-import { CourseContext ,SetCourseContext} from './contexts';
+import { AuthProvider } from './contexts/AuthContext';
+import { CourseContextProvider } from './contexts/CourseContext';
 function App() {
   const [navOptions , setNavOptions] = useState([]);
   const [courseInterested , setCourseInterested] = useState(null);
   useEffect (() => {
-    console.log("fetching nav options");
     getNavOptionsApi().then((response) => {
      setNavOptions(response.data);
       console.log(response);
     })
   },[])
-  // useMemo (() => {
-  // },[navOptions])
-  // navOptions = useMemo(() => {
-  //   return navOptions;
-  // } , [nak])
-  return (
+ return (
     <>
     <GlobalStyle/>
-    <SetCourseContext.Provider value = {setCourseInterested}>
-    <CourseContext.Provider value = {courseInterested}>
+    <AuthProvider>
+    <CourseContextProvider>
     <Router>
       <PrimarySearchAppBar navOptions={navOptions}/>
+      <ToastContainer/>
       <AllRoutes/>
     </Router>
-    </CourseContext.Provider>
-    </SetCourseContext.Provider>
+    </CourseContextProvider>
+    </AuthProvider>
     </>
   );
 }

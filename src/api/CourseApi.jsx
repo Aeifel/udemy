@@ -1,17 +1,14 @@
-import axios from 'axios'
-const api = axios.create({
-  baseURL: 'http://localhost:4000',
-  timeout: 20000000000000,
-});
+import api from './axios';
+
 const viewCourseUrl = "/course/view";
 const uploadLessonUrl = "/course/addLesson";
-const enrollCourseUrl = "/course/enrollCourse";
 const uploadCourseUrl = "/course/add";
 const getAllCoursesUrl = "/course/all"
 const getLessonUrl = "/course/getLesson";
 const markCompletedUrl = "/course/markCompleted";
 const getNavOptionsUrl = "/course/navOptions"
 const postReviewsUrl = "/course/review";
+const getByCategoryUrl = "/course/category";
 export const getNavOptionsApi = async() => {
     try{
         const response = await api.get(getNavOptionsUrl);
@@ -94,6 +91,16 @@ export const postReviewsApi = async(payload) => {
     api.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem("accessToken")}`;
     try {
         const response = await api.post(postReviewsUrl , payload);
+        return response;
+    }
+    catch(error){
+        console.log(error.message);
+        return error;
+    }
+}
+export const getByCategoryApi = async(payload) => {
+    try{
+        const response = await api.post(`${getByCategoryUrl}/` , payload);
         return response;
     }
     catch(error){

@@ -1,4 +1,5 @@
-import { useRef,useState } from "react";
+import { useRef,useState , useContext } from "react";
+import { useNavigate } from "react-router-dom";
 import PersonIcon from "@mui/icons-material/Person";
 import EmailOutlinedIcon from "@mui/icons-material/EmailOutlined";
 import KeyIcon from "@mui/icons-material/Key";
@@ -8,6 +9,8 @@ import styles from "../styles/InstructorSignup.module.css";
 import { ExpandHoverBtn } from "../components/Buttons";
 import { instructorSignupApi } from "../api/InstructorApi";
 import { CircularSpinner } from "../components/Loaders";
+import { AuthContext } from "../contexts/AuthContext";
+import { showErrorToastNotification , showSuccessToastNotification } from "../components/Notifications";
 const InstructorSingup = () => {
   const uploadedImage = useRef(null);
   const imageUploader = useRef(null);
@@ -29,6 +32,8 @@ const InstructorSingup = () => {
   const instructorWorkRef = useRef(null);
   const instructorAboutRef = useRef(null);
   const [isLoading , setIsLoading] = useState(false);
+  const {setAuth , setType ,setUserToken} = useContext(AuthContext);
+  const navigate = useNavigate();
   const handleInstructorSignup = async(e) => {
     e.preventDefault();
     setIsLoading(true);
@@ -48,8 +53,16 @@ const InstructorSingup = () => {
     const response = await instructorSignupApi(formData);
     if(response.status === 200){
       localStorage.setItem('accessToken' , response.data.accessToken);
-    console.log(response);
-    window.location.href = "/";
+      localStorage.setItem('type' , 'instructor');
+      setAuth(true);
+      setType("instructor");
+      setUserToken(response.data.accessToken);
+      navigate('/');
+      console.log(response);
+    }
+    else{
+      const {msg} = response.response.data;
+      showErrorToastNotification(`${msg}`);
     }
     setIsLoading(false);
   }

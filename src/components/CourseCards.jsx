@@ -26,13 +26,7 @@ const CourseCard = (props) => {
     const year = dateObj.getFullYear();
     return `${month} ${year}`;
   };
-  const directToCoursePage = () => {
-    const {_id} = course;
-    console.log(_id);
-    sessionStorage.setItem("courseId",_id);
-    window.location.href="/course/";
-  }
-  const {_id,courseTitle,description,language,keypoints,updatedDate,cost,courseImg,category,instructor,numberOfEnrollments,rating} = course;
+    const {_id,courseTitle,description,language,keypoints,updatedDate,cost,courseImg,category,instructor,numberOfEnrollments,rating} = course;
   const HtmlTooltip = styled(({ className, ...props }) => (
     <Tooltip {...props} classes={{ popper: className }} />
   ))(({ theme }) => ({

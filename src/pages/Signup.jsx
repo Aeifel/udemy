@@ -1,13 +1,15 @@
 import { TextField } from "@mui/material";
 import axios from "axios";
-import { useState, useRef } from "react";
+import { useState, useRef,useContext } from "react";
 import styles from "../styles/Login.module.css";
 import AddAPhotoIcon from "@mui/icons-material/AddAPhoto";
 import { styled } from "@mui/material";
 import { userSignupApi } from "../api/userApi";
 import { Link } from "react-router-dom";
 import Footer from "../components/Footer";
-import { DualSpinner } from "../components/Loaders";
+import { CircularSpinner } from "../components/Loaders";
+import { AuthContext } from "../contexts/AuthContext";
+import { showErrorToastNotification , showSuccessToastNotification } from "../components/Notifications";
 const CssTextField = styled(TextField)({
   "& label.Mui-focused": {
     color: "var(--textSecondary)",
@@ -34,6 +36,7 @@ const Signup = () => {
   const [userType, setUserType] = useState(null);
   const [errorState, setErrorState] = useState(false);
   const [isLoading , setIsLoading] = useState(false);
+  const {setAuth , setType ,setUserToken} = useContext(AuthContext);
   const uploadedImage = useRef(null);
   const imageUploader = useRef(null);
   const handleSignup = async (e) => {
@@ -53,7 +56,16 @@ const Signup = () => {
     setIsLoading(false);
     if ( response.status == 200){
       localStorage.setItem("accessToken" , response.data.accessToken);
+      localStorage.setItem("type" , "student");
       window.location.href="/";
+      setAuth(true);
+      setUserToken(response.data.accessToken);
+      setType("student");
+      showSuccessToastNotification("Signup Successfull");
+    }
+    else {
+      const message = response.response.data.msg;
+      showErrorToastNotification(`${message}`);
     }
     // formData.append("file", imageFile);
     // formData.append("upload_preset", "cloudinaryUpload");
@@ -104,7 +116,8 @@ const Signup = () => {
   return (
     <>
       {/* <form onSubmit={e => handleSignup(e)}> */}
-      <div className={styles.container}>
+      {isLoading && <CircularSpinner/>}
+      {!isLoading && <div className={styles.container}>
         <div className={styles.heading}>Student Signup</div>
         <div>
           <input
@@ -191,7 +204,7 @@ const Signup = () => {
         {errorState == true ? (
           <p className={styles.error}>Account already exists</p>
         ) : null}
-      </div>
+      </div>}
       {/* </form> */}
       <Footer />
     </>

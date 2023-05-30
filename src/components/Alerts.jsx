@@ -1,6 +1,5 @@
 import { Link } from 'react-router-dom';
 import Alert from '@mui/material/Alert';
-import Button from '@mui/material/Button';
 export const InstructorAlert = (setAlert) => {return (<Alert variant="outlined" sx ={{position:"sticky" , top:"0" , zIndex:"99",backgroundColor:"white"}}onClose = {(e )=>{setAlert(false)}}severity="warning">
     Login or Signup as a Instructor 
 </Alert>)}

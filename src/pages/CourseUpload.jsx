@@ -1,10 +1,10 @@
 import { useState, useRef } from "react";
+import {Link , useNavigate} from "react-router-dom";
 import DoneIcon from "@mui/icons-material/Done";
 import AddAPhotoIcon from '@mui/icons-material/AddAPhoto';
 import StarIcon from '@mui/icons-material/Star';
 import styles from "../styles/CourseUpload.module.css";
 import { uploadCourseApi } from "../api/CourseApi";
-import {Link} from "react-router-dom";
 import Footer from "../components/Footer";
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
@@ -30,6 +30,7 @@ const CourseUpload = () => {
   const imageUploader = useRef(null);
   const [category, setCategory] = useState('');
   const [isLoading , setIsLoading] = useState(false);
+  const navigate = useNavigate();
   const instructorId= localStorage.getItem("userId");
    const handleCourseRegister = async(e) => {
     e.preventDefault();
@@ -52,7 +53,7 @@ const CourseUpload = () => {
     setIsLoading(false);
     console.log(response.data);
     localStorage.setItem("uploadCourseId" , response.data);
-    window.location.href = "/lessonAdd";
+    navigate('/lessonAdd')
     }
     console.log(`The response is ${response}`);
   };

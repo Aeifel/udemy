@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useContext } from 'react';
 import Button from '@mui/material/Button';
 import { Box } from '@mui/material';
 import Dialog from '@mui/material/Dialog';
@@ -8,12 +9,14 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import Slide from '@mui/material/Slide';
 import { courseEnrollApi } from '../api/userApi';
+import { CourseContext } from '../contexts/CourseContext';
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 const BuyCourse = (props) => {
   const {course  , setCourseCompletionDetails , setUserCourseDetails} = props;
   const [open, setOpen] = React.useState(false);
+  const {setAccess} = useContext(CourseContext);
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -25,6 +28,7 @@ const BuyCourse = (props) => {
       console.log(response);
       setCourseCompletionDetails(response.data.courseDetails);
       setUserCourseDetails (response.data.courseDetails);
+      setAccess(true);
     setOpen(false);
     }).catch((err) => {
       console.log("Error occured");
