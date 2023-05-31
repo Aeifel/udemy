@@ -1,30 +1,29 @@
 import { useState, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import LessonUploadComponent from "../components/LessonUploadComponent";
+import { uploadLessonApi } from "../api/CourseApi";
 import Footer from "../components/Footer";
 import styles from "../styles/LessonUpload.module.css";
+import { CircularSpinner } from "../components/Loaders";
 const LessonUpload = () => {
   const [Lessons, setLessons] = useState([]);
-  const [count , setCount] = useState(1);
+  const [isLoading, setIsLoading] = useState(false);
   const handleAddLesson = (e) => {
     e.preventDefault();
     let newLessons = [
       ...Lessons,
-      <LessonUploadComponent key={Lessons.length} id={count} setCount={setCount} />,
+      <LessonUploadComponent key={Lessons.length} id={Lessons.length} />,
     ];
     setLessons(newLessons);
     console.log(Lessons);
   };
   const pageData = (
     <>
-      {/* <div style={{ background: "rgb(240,240,240,0.7)" }}>
+      <div style={{ background: "rgb(240,240,240,0.7)" }}>
         <div className={styles.componentContainer}>
           {Lessons.map((Component, i) => {
             return Component;
           })}
-        </div> */}
-        <div className={styles.componentContainer}>
-          <LessonUploadComponent key={Lessons.length} id={Lessons.length} />
         </div>
         <div className={styles.btnContainer}>
           <button
@@ -48,7 +47,7 @@ const LessonUpload = () => {
           </Link>
        </div>
         <Footer />
-      {/* </div> */}
+      </div>
     </>
   );
   return <>{pageData}</>;

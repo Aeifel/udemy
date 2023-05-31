@@ -112,7 +112,7 @@ const CourseUpload = () => {
     <MenuItem value={"Python"}>Python</MenuItem>
     <MenuItem value={"Java"}>Java</MenuItem>
     <MenuItem value={"Machine Learning"}>Machine Learning</MenuItem>
-    <MenuItem value={"Web Development"}>Web Development</MenuItem>
+    <MenuItem value={"Web Development"}>Web development</MenuItem>
   </Select>
 </FormControl>
           </div>
@@ -148,7 +148,6 @@ const CourseUpload = () => {
           </div>
         <div className={styles.btnContainer}>
             <input type="submit" value="Register the course" className={styles.registerBtn}/>
-        <Link to ="/lessonAdd" className={styles.uploadBtn}>Proceed to upload Lessons</Link>
         </div>
         </div>
        <div className={styles.rightCol}>

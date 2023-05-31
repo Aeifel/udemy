@@ -45,7 +45,7 @@ CircularProgressWithLabel.propTypes = {
   value: PropTypes.number.isRequired,
 };
 const CircularStatic = ({courseCompletionDetails}) => {
-  let total = courseCompletionDetails.length;
+  let total = courseCompletionDetails ?courseCompletionDetails.length:0;
   courseCompletionDetails = courseCompletionDetails.filter((course) => course == true);
   const percentCompleted = courseCompletionDetails.length/total * 100;
   console.log(percentCompleted);

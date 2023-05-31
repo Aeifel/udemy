@@ -62,7 +62,7 @@ const AllRoutes = (props) => {
       <Route path="/lesson/" element={<Lesson/>}/>
       <Route path="/courseRegister/" element={<CourseUpload/>}/>
       <Route path="/lessonAdd/" element={<LessonUpload/>}/>
-      {/* <Route path="/" element={<Test/>}/> */}
+      <Route path="/test" element={<Test/>}/>
       <Route path="*" element={<h1>404 Not Found</h1>}/>
     </Routes>
   )

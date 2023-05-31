@@ -33,7 +33,7 @@ export const uploadCourseApi = async(payload) => {
 export const uploadModuleApi = async(payload) => {
     try {
         const response = await api.post(uploadModuleUrl , payload);
-        return await response;
+        return response;
     }
     catch(err) {
         console.error(err);

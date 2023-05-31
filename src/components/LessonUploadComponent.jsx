@@ -1,85 +1,46 @@
-import {useRef} from "react"
+import {useRef , useState} from "react"
 import styles from "../styles/LessonUploadComponent.module.css";
-import { uploadModuleApi } from "../api/coursesApi";
+import { uploadLessonApi } from "../api/CourseApi";
+import { VideoUploadWidget , PdfUploadWidget } from "./UploadWidget";
+import { SquareSpinner } from "./Loaders";
+import { showSuccessToastNotification ,showErrorToastNotification} from "./Notifications";
 const LessonUploadComponent = (props) => {
-    const {id , fileRefs , setFileRefs} = props;
-    const videoRef = useRef(0);
-    const pdfRef = useRef(0);
+    const {id , setCount} = props;
+    const [videoUrl , setVideoUrl] = useState("");
+    const [pdfUrl , setPdfUrl] = useState("");
+    const [isLoading , setIsLoading] = useState(false);
     const titleRef = useRef(null);
     const descRef = useRef(null);
-    setFileRefs((oldVal) => [...oldVal , {titleRef , descRef , videoRef , pdfRef}]);
-//   const handleUploadLessons = async(e) => {
-//     e.preventDefault();
-//       const moduleObj = {
-//         name:titleRef.current.value,
-//         desc:descRef.current.value,
-//         courseId:localStorage.getItem("uploadCourseId")
-//       }
-//       const videoFile = videoRef.current.files[0];
-//       const pdfFile = pdfRef.current.files[0];
-//       console.log(videoFile);
-//       console.log(pdfFile);
-//       let bodyFormData = new FormData();
-//       bodyFormData.append("courseId" , localStorage.getItem("uploadCourseId"));
-//       bodyFormData.append("module" , JSON.stringify(moduleObj));
-//       bodyFormData.append("pdfFile" , pdfFile);
-//       bodyFormData.append("videoFile" , videoFile);
-//       console.log(bodyFormData);
-//       const response = await uploadModuleApi(bodyFormData);
-
-//     fileRefs.map(async(ele) => {
-//       const {titleRef , descRef , videoRef , pdfRef} = ele;
-//       const moduleObj = {
-//         name:titleRef.current.value,
-//         desc:descRef.current.value,
-//         courseId:localStorage.getItem("uploadCourseId")
-//       }
-//       const videoFile = videoRef.current.files[0];
-//       const pdfFile = pdfRef.current.files[0];
-//       console.log(videoFile);
-//       console.log(pdfFile);
-//       let bodyFormData = new FormData();
-//       bodyFormData.append("courseId" , localStorage.getItem("uploadCourseId"));
-//       bodyFormData.append("module" , JSON.stringify(moduleObj));
-//       bodyFormData.append("pdfFile" , pdfFile);
-//       bodyFormData.append("videoFile" , videoFile);
-//       console.log(bodyFormData);
-//       const response = await uploadModuleApi(bodyFormData);
-//       if(response.status == 200) {
-        
-//       }
-//       console.log(response);
-//     });
-//   }
-//     const UploadLesson =(e) => {
-//         e.preventDefault();
-//   const moduleObj = {
-//         name:titleRef.current.value,
-//         desc:descRef.current.value,
-//         courseId:localStorage.getItem("uploadCourseId")
-//       }
-//       const videoFile = videoRef.current.files[0];
-//       const pdfFile = pdfRef.current.files[0];
-//       console.log(videoFile);
-//       console.log(pdfFile);
-//       let bodyFormData = new FormData();
-//       bodyFormData.append("courseId" , localStorage.getItem("uploadCourseId"));
-//       bodyFormData.append("module" , JSON.stringify(moduleObj));
-//       bodyFormData.append("pdfFile" , pdfFile);
-//       bodyFormData.append("videoFile" , videoFile);
-//       console.log(bodyFormData);
-//       uploadModuleApi(bodyFormData).then((resolve) =>
-//       {
-//         if(resolve.status == 200) {
-//             console.log("Lesson updated successfully");
-//         }
-//       });
-//     }
-
-    return(
+    const handleUploadLesson = async(e) => {
+        e.preventDefault();
+        setIsLoading(true);
+        const module = {
+            title:titleRef.current.value,
+            description:descRef.current.value,
+            videoUrl:videoUrl,
+            pdfUrl:pdfUrl,
+        }
+        const response = await uploadLessonApi({courseId:localStorage.getItem("uploadCourseId") , module:module});
+        if(response.status == 200) {
+            showSuccessToastNotification(`Lesson ${id+1}uploaded successfully`);
+            setCount(oldVal => oldVal + 1);
+            setIsLoading(false);
+        }
+        else{
+            showErrorToastNotification("Error in uploading lesson");
+            setIsLoading(false);
+        }
+    }
+   return(
+    <>
+    {isLoading && <SquareSpinner/>}
+    {!isLoading && 
         <div className={styles.formContainer}>
             <div className={styles.row}>
-                <label htmlFor="ModuleTitle">Module Title</label>
+                <p>Module {id+1}</p>
+            </div>
+            <div className={styles.row}>
+                <label htmlFor="ModuleTitle"> Module Title</label>
                 <input type="text" name="ModuleTitle" id="ModuleTitle" ref={titleRef} placeholder="Enter the lesson's title" key={`title${id}`}/>
             </div>
             <div className={styles.row}>
@@ -88,14 +49,18 @@ const LessonUploadComponent = (props) => {
             </div>
             <div className={styles.row}>
                 <label htmlFor="Video">Lesson's Video</label>
-                <input type="file" ref={videoRef}name={`video${id}`} id={`video${id}`} placeholder="Upload the Lesson Video" key={`lessonVideo${id}`}/>
+                <VideoUploadWidget setUrl={setVideoUrl}/>
             </div>
             <div className={styles.row}>
                 <label htmlFor="Pdf">Lesson's Pdf</label>
-                <input type="file" ref={pdfRef }name={`pdf${id}`} id={`pdf${id}`} placeholder="Upload the lesson pdf" key={`lessonPdf${id}`}/>
+                <PdfUploadWidget setUrl={setPdfUrl}/>
             </div>
-                {/* <button className = {styles.uploadBtn} onClick={ e => UploadLesson(e)}> Upload</button> */}
+            <div>
+                <button className = {styles.uploadBtn} onClick={ e => handleUploadLesson(e)}> Upload</button>
+            </div>
         </div>
+    }
+    </>
     )
 }
 export default LessonUploadComponent;
