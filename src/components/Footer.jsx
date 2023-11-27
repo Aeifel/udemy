@@ -37,7 +37,7 @@ const Footer = () => {
                 </div>
             </div>
             <div className={styles.secondRow}>
-                <p><CopyrightIcon/>Made with <FavoriteIcon/> by Ashwin and Kathir</p>
+                <p><CopyrightIcon/>Made with <FavoriteIcon/> by Raghul and Hari</p>
             </div>
         </div>
     )
